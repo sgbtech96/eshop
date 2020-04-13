@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(express.json())
 
 app.get('/', (req, res) => {
-	res.render('index')
+	res.render('index', {})
 })
 
 app.post('/send', (req, res) => {
