@@ -36,7 +36,7 @@ inp.addEventListener('click', (e) => {
 view.addEventListener('click', (e) => {
 	table.innerHTML = "";
 	console.log(category.value, date.value)
-	const url = 'http://localhost:3000/view?category=' + category.value + '&date=' + date.value
+	const url = 'https://eshopkh.herokuapp.com/view?category=' + category.value + '&date=' + date.value
 	console.log(url)
 	fetch(url).then((res) => {
 		res.json().then((data) => {
