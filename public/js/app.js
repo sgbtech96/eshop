@@ -1,17 +1,55 @@
-const form = document.querySelector('form')
+const myform = document.querySelector('form')
 const view = document.querySelector('#view')
-const para = document.querySelector('#show')
+const table = document.querySelector('#show')
+const inp = document.querySelector('input')
+const category = document.querySelector('#category')
+const date = document.querySelector('#date')
+
+const addHead = (obj) => {
+	var row = table.insertRow(0)
+	const vals = Object.keys(obj)
+	for(var i = 1; i < 5; i++)
+	{
+		var cell = row.insertCell(i - 1)
+		cell.innerHTML = vals[i].toUpperCase().bold()
+	}
+}
+
+const addRow = (obj, n) => {
+	var row = table.insertRow(n)
+	const vals = Object.values(obj)
+	for(var i = 1; i < 5; i++)
+	{
+		var cell = row.insertCell(i - 1)
+		cell.innerHTML = vals[i]
+	}
+}
+
+myform.addEventListener('submit', (e) => {
+	msg1.innerHTML = "Updated successfully!"
+})
+
+inp.addEventListener('click', (e) => {
+	table.innerHTML = ""
+})
 
 view.addEventListener('click', (e) => {
-	para.innerHTML = "";
-	fetch('/view').then((res) => {
+	table.innerHTML = "";
+	console.log(category.value, date.value)
+	const url = 'http://localhost:3000/view?category=' + category.value + '&date=' + date.value
+	console.log(url)
+	fetch(url).then((res) => {
 		res.json().then((data) => {
-			var i = 0
-			data.forEach((item) => {
-				i++
-				para.innerHTML += "Sno = " + i + "<br>uid = " + item.uid + "<br>out_date = " + item.out_date + "<br>category = " + item.category + "<br>selling_price = " + item.selling_price
-				para.innerHTML += "<hr>"
-			})
+			if(data.length > 0)
+			{
+				var i = 1
+				addHead(data[0])
+				data.forEach((item) => {
+					addRow(item, i)
+					i++
+				})
+			}
+			
 		})
 	})
 })

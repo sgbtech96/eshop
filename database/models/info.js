@@ -10,7 +10,7 @@ const info = mongoose.model('Item', {
 		type: String
 	},
 	selling_price: {
-		type: Number
+		type: String
 	}
 })
 module.exports = info

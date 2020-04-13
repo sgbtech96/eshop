@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	{{!-- <link rel="stylesheet" href="/css/styles.css"> --}}
+	<link rel="stylesheet" href="/css/styles.css">
 	<title></title>
 </head>
 <body>
@@ -14,11 +14,19 @@
 		<input type="text" name="category"><br><br>
 		selling_price:
 		<input type="text" name="selling_price"><br><br>
-		<input type="submit">
+		<input type="submit" value="Make Entry">
 	</form>
 	<hr>
-	<button id="view">View</button>
-	<p id="show"></p>
+	Show by Category: <select id="category">
+		  <option value="none" selected>none</option>
+		  <option value="deo">deo</option>
+		  <option value="purse">purse</option>
+		  <option value="belt">belt</option>
+		  <option value="watch">watch</option>
+	</select>
+	Show by Date: <input type="text" id="date" value="none">
+	<button id="view">View</button><br><br>
+	<table id="show" style="width:50%" border="1"></table>
 	<script src="/js/app.js"></script>
 </body>
 </html>

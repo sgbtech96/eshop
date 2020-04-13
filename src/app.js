@@ -5,7 +5,7 @@ const path = require('path')
 const hbs = require('hbs')
 const port = process.env.PORT || 3000
 const app = express()
-var bodyParser = require("body-parser")
+const bodyParser = require("body-parser")
 const publicPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
@@ -24,14 +24,25 @@ app.get('/', (req, res) => {
 app.post('/send', (req, res) => {
 	const item = new info(req.body)
 	item.save().then(() => {
-		res.send(item);
+		res.render('index', {});
 	}).catch((e) => {
 		res.send(e);
 	})
 })
 
 app.get('/view', (req, res) => {
-	info.find({}).then((items) => {
+	console.log(req.query)
+	const category = req.query.category
+	const out_date = req.query.date
+	console.log(category, out_date)
+	var obj = {}
+	if(category != "none" && out_date != "none")
+		obj = {category, out_date}
+	else if(category != "none")
+		obj = {category}
+	else if(out_date != "none")
+		obj = {out_date}
+	info.find(obj).then((items) => {
 		res.send(items)
 	}).catch((e) => {
 		res.send(e)
