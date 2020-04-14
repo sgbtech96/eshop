@@ -1,32 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link rel="stylesheet" href="/css/styles.css">
-	<title></title>
+	<title>KHAZANA</title>
 </head>
 <body>
-	<form type="submit" action="/send" method="post">
-		uid:
-		<input type="text" name="uid"><br><br>
-		out_date:
-		<input type="text" name="out_date"><br><br>
-		category:
-		<input type="text" name="category"><br><br>
-		selling_price:
-		<input type="text" name="selling_price"><br><br>
-		<input type="submit" value="Make Entry">
-	</form>
-	<hr>
-	Show by Category: <select id="category">
-		  <option value="none" selected>none</option>
-		  <option value="deo">deo</option>
-		  <option value="purse">purse</option>
-		  <option value="belt">belt</option>
-		  <option value="watch">watch</option>
-	</select>
-	Show by Date: <input type="text" id="date" value="none">
-	<button id="view">View</button><br><br>
-	<table id="show" style="width:50%" border="1"></table>
-	<script src="/js/app.js"></script>
+	<div class="h1 container">KHAZANA</div>
+	<div class="h2 container">e-portal</div>
+	<div class="row container">
+		<button class="btn btn-dark btn-lg" id="bt1">Stock</button>
+		<button class="btn btn-dark btn-lg" id="bt2">Sales</button>
+	</div>
+	<script src="/js/indexSCRIPT.js"></script>
 </body>
 </html>

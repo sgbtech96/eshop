@@ -1,11 +1,20 @@
+//basic express set-up
 const express = require('express')
+const app = express()
+
+//dynamic port
+const port = process.env.PORT || 3000
+
+//db connect
 require('../database/connect')
-const info = require('../database/models/info')
+
+//including the stock and sales models
+const stock = require('../database/models/stock')
+const sales = require('../database/models/sales')
+
+//setting up dir structure
 const path = require('path')
 const hbs = require('hbs')
-const port = process.env.PORT || 3000
-const app = express()
-const bodyParser = require("body-parser")
 const publicPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
@@ -13,42 +22,106 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 app.use(express.static(publicPath))
+
+//setting up parsers
+const bodyParser = require("body-parser")
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 app.use(express.json())
 
+//CORS soln
+app.all('*', function(req, res, next) {
+     var origin = req.get('origin'); 
+     res.header('Access-Control-Allow-Origin', origin);
+     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+     res.header('Access-Control-Allow-Headers', 'Content-Type');
+     next();
+});
+
+//main page
 app.get('/', (req, res) => {
 	res.render('index', {})
 })
 
-app.post('/send', (req, res) => {
-	const item = new info(req.body)
+//sales page
+app.get('/sales', (req, res) => {
+	res.render('sales', {})
+})
+
+//stock page
+app.get('/stock', (req, res) => {
+	res.render('stock', {})
+})
+
+//stock entry
+app.post('/stock/send', async (req, res) => {
+	const model_no = req.body.model_no
+	const old = await stock.findOneAndUpdate({model_no}, {
+		$inc: {
+			quantity: req.body.quantity
+		}
+	})
+	if(old != undefined)
+	{
+		res.render('stock', {})
+		return
+	}
+	const item = new stock(req.body)
+	await item.save()
+	res.render('stock', {})
+})
+
+//stock view
+app.get('/stock/view',async (req, res) => {
+	const category = req.query.category
+	const entry_date = req.query.entry_date
+	var obj = {}
+	if(category != "none" && entry_date != "none")
+		obj = {category, entry_date}
+	else if(category != "none")
+		obj = {category}
+	else if(entry_date != "none")
+		obj = {entry_date}
+	const items = await stock.find(obj)
+	res.send(items)
+})
+
+//sale entry
+app.post('/sales/send', async (req, res) => {
+	const model_no = req.body.model_no
+	await stock.findOneAndUpdate({model_no}, {
+		$inc: {
+			quantity: -1
+		}
+	})
+	const item = new sales(req.body)
 	item.save().then(() => {
-		res.render('index', {});
+		res.render('sales', {});
 	}).catch((e) => {
 		res.send(e);
 	})
 })
 
-app.get('/view', (req, res) => {
-	console.log(req.query)
+//sales view
+app.get('/sales/view', (req, res) => {
 	const category = req.query.category
-	const out_date = req.query.date
-	console.log(category, out_date)
+	const transaction_date = req.query.transaction_date
 	var obj = {}
-	if(category != "none" && out_date != "none")
-		obj = {category, out_date}
+	if(category != "none" && transaction_date != "none")
+		obj = {category, transaction_date}
 	else if(category != "none")
 		obj = {category}
-	else if(out_date != "none")
-		obj = {out_date}
-	info.find(obj).then((items) => {
+	else if(transaction_date != "none")
+		obj = {transaction_date}
+	sales.find(obj).then((items) => {
 		res.send(items)
 	}).catch((e) => {
 		res.send(e)
 	})
 })
 
+
+//listening at port
 app.listen(port, () => {
 	console.log('Server is up on port', port)
 })

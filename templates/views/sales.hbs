@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/sales.css">
+	<title>Sales</title>
+</head>
+<body>
+	<form type="submit" action="/sales/send" method="post" class="container">
+		<div class="row">
+			<div class="col">
+				Model-No:<br>
+				<input type="text" name="model_no">
+			</div>
+			<div class="col">
+				Transaction Date:<br>
+				<input type="date" name="transaction_date">
+			</div>
+			<div class="col">
+				Transaction Time:<br>
+				<input type="text" name="transaction_time" id="tt">
+			</div>
+			<div class="col">
+				Category of Item:<br>
+				<input type="text" name="category">
+			</div>
+			<div class="col">
+				Told Price:<br>
+				<input type="text" name="told_price">
+			</div>
+			<div class="col">
+				Selling Price:<br>
+				<input type="text" name="selling_price">
+			</div>
+		</div><br>
+		<div class="row">
+			<button type="submit" class="btn btn-info">Make Entry</button>
+		</div>
+	</form>
+	<hr>
+	<div class="row container">
+		<div class="col">
+		Show by Category<br>
+			<select id="category">
+			  <option value="none" selected>none</option>
+			  <option value="deo">deo</option>
+			  <option value="purse">purse</option>
+			  <option value="belt">belt</option>
+			  <option value="watch">watch</option>
+			</select>
+		</div>
+		<div class="col">
+			Show by Date<br>
+			<input type="date" id="date" value="none">
+		</div>
+		<div class="col">
+			Show Sales<br>
+			<button id="view" class="btn btn-info">View</button><br><br>
+		</div>
+	</div>
+	<div class="row">
+		<table id="show" style="width:50%" border="1" class="table container"></table>
+	</div>
+	<div class="row container" id="bot">
+		<button class="btn btn-dark" id="bt1">Stock</button>
+		<button class="btn btn-dark" id="bt2">Sales</button>
+		<button class="btn btn-dark" id="bt3">Home</button>
+	</div>
+	<script src="/js/salesSCRIPT.js"></script>
+	<script src="/js/indexSCRIPT.js"></script>
+</body>
+</html>
