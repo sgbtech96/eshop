@@ -4,6 +4,8 @@ const category = document.querySelector('#category')
 const date = document.querySelector('#date')
 const table = document.querySelector('#show')
 const et = document.querySelector('#et')
+const mdno = document.querySelector('#mdno')
+const qty = document.querySelector('#qty')
 
 const addHead = (obj) => {
 	var row = table.insertRow(0)
@@ -42,7 +44,7 @@ view.addEventListener('click', (e) => {
 		d = "none"
 	else
 		d = date.value
-	const url = '/stock/view?category=' + category.value + '&entry_date=' + d
+	const url = '/stock/view?model_no=' + mdno.value + '&category=' + category.value + '&entry_date=' + d + '&quantity=' + qty.value
 	fetch(url).then((res) => {
 		res.json().then((data) => {
 			if(data.length > 0)
@@ -50,6 +52,7 @@ view.addEventListener('click', (e) => {
 				var i = 1
 				addHead(data[0])
 				data.forEach((item) => {
+					item.entry_date = item.entry_date.substring(0, 10)
 					addRow(item, i)
 					i++
 				})

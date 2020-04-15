@@ -6,65 +6,79 @@
 	<title>Sales</title>
 </head>
 <body>
-	<form type="submit" action="/sales/send" method="post" class="container">
-		<div class="row">
-			<div class="col">
-				Model-No:<br>
-				<input type="text" name="model_no">
-			</div>
-			<div class="col">
-				Transaction Date:<br>
-				<input type="date" name="transaction_date">
-			</div>
-			<div class="col">
-				Transaction Time:<br>
-				<input type="text" name="transaction_time" id="tt">
-			</div>
-			<div class="col">
-				Category of Item:<br>
-				<input type="text" name="category">
-			</div>
-			<div class="col">
-				Told Price:<br>
-				<input type="text" name="told_price">
-			</div>
-			<div class="col">
-				Selling Price:<br>
-				<input type="text" name="selling_price">
-			</div>
-		</div><br>
-		<div class="row">
-			<button type="submit" class="btn btn-info">Make Entry</button>
-		</div>
-	</form>
-	<hr>
-	<div class="row container">
-		<div class="col">
-		Show by Category<br>
-			<select id="category">
-			  <option value="none" selected>none</option>
-			  <option value="deo">deo</option>
-			  <option value="purse">purse</option>
-			  <option value="belt">belt</option>
-			  <option value="watch">watch</option>
-			</select>
-		</div>
-		<div class="col">
-			Show by Date<br>
-			<input type="date" id="date" value="none">
-		</div>
-		<div class="col">
-			Show Sales<br>
-			<button id="view" class="btn btn-info">View</button><br><br>
-		</div>
-	</div>
 	<div class="row">
-		<table id="show" style="width:50%" border="1" class="table container"></table>
-	</div>
-	<div class="row container" id="bot">
-		<button class="btn btn-dark" id="bt1">Stock</button>
-		<button class="btn btn-dark" id="bt2">Sales</button>
-		<button class="btn btn-dark" id="bt3">Home</button>
+		<div class="col-4">
+			<form type="submit" action="/sales/send" method="post" class="container">
+				<div class="row">
+					<div class="col-5">
+						Model-No:<br>
+						<input type="text" name="model_no" size="13">
+					</div>
+					<div class="col">
+						Transaction Date:<br>
+						<input type="date" name="transaction_date" size="13">
+					</div>
+					
+				</div><br>
+				<div class="row">
+					<div class="col-5">
+						Transaction Time:<br>
+						<input type="text" name="transaction_time" id="tt" size="13">
+					</div>
+					<div class="col">
+						Category of Item:<br>
+						<input type="text" name="category" size="13">
+					</div>
+				</div><br>
+				<div class="row">
+					<div class="col-5">
+						Told Price:<br>
+						<input type="text" name="told_price" size="13">
+					</div>
+					<div class="col">
+						Selling Price:<br>
+						<input type="text" name="selling_price" size="13">
+					</div>
+				</div><br><br>
+				<div class="row container">
+					<div class="container col"><button type="submit" class="btn btn-info">Make Entry</button></div>
+				</div>
+			</form>
+		</div>
+		<div class="col">
+			<div class="row container">
+				<div class="col">
+					Show by Model_No<br>
+					<input type="text" value="none" id="mdno" size="13">
+				</div>
+				<div class="col">
+					Show by Category<br>
+						<select id="category">
+						  <option value="none" selected>none</option>
+						  <option value="deo">deo</option>
+						  <option value="purse">purse</option>
+						  <option value="belt">belt</option>
+						  <option value="watch">watch</option>
+						</select>
+				</div>
+				<div class="col">
+					Show by Date<br>
+					<input type="date" id="date" value="none">
+				</div>
+				<div class="col-2">
+					Show Sales<br>
+					<button id="view" class="btn btn-info">View</button><br><br>
+				</div>
+			</div>
+			<div class="row container">
+				<table id="show" style="width:50%" border="1" class="table container"></table>
+			</div>
+			<div class="row container" id="bot">
+				<div class="col-1"><button class="btn btn-secondary btn-sm" id="bt1">Stock</button></div>
+				<div class="col-1"><button class="btn btn-secondary btn-sm" id="bt2">Sales</button></div>
+				<div class="col"><button class="btn btn-secondary btn-sm" id="bt3">Home</button></div>
+			</div>
+		</div>
 	</div>
 	<script src="/js/salesSCRIPT.js"></script>
 	<script src="/js/indexSCRIPT.js"></script>

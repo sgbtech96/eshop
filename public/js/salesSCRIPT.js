@@ -4,6 +4,7 @@ const inp = document.querySelector('input')
 const category = document.querySelector('#category')
 const date = document.querySelector('#date')
 const tt = document.querySelector('#tt')
+const mdno = document.querySelector('#mdno')
 
 const addHead = (obj) => {
 	var row = table.insertRow(0)
@@ -25,6 +26,9 @@ const addRow = (obj, n) => {
 	}
 }
 
+mdno.addEventListener('click', (e) => {
+	mdno.value = "none"
+})
 tt.addEventListener('click', (e) => {
 	var today = new Date()
 	var time = today.getHours() + ":" + today.getMinutes()
@@ -42,7 +46,7 @@ view.addEventListener('click', (e) => {
 		d = "none"
 	else
 		d = date.value
-	const url = '/sales/view?category=' + category.value + '&transaction_date=' + d
+	const url = '/sales/view?model_no=' + mdno.value + '&category=' + category.value + '&transaction_date=' + d
 	fetch(url).then((res) => {
 		res.json().then((data) => {
 			if(data.length > 0)
@@ -50,6 +54,7 @@ view.addEventListener('click', (e) => {
 				var i = 1
 				addHead(data[0])
 				data.forEach((item) => {
+					item.transaction_date = item.transaction_date.substring(0, 10)
 					addRow(item, i)
 					i++
 				})

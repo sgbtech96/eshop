@@ -73,15 +73,23 @@ app.post('/stock/send', async (req, res) => {
 
 //stock view
 app.get('/stock/view',async (req, res) => {
+	const quantity = req.query.quantity
+	if(quantity != "none")
+	{
+		const short_items = await stock.find({quantity: { $lt:quantity }})
+		res.send(short_items)
+		return
+	}
+	const model_no = req.query.model_no
 	const category = req.query.category
 	const entry_date = req.query.entry_date
 	var obj = {}
-	if(category != "none" && entry_date != "none")
-		obj = {category, entry_date}
-	else if(category != "none")
-		obj = {category}
-	else if(entry_date != "none")
-		obj = {entry_date}
+	if(model_no != "none")
+		obj.model_no = model_no
+	if(category != "none")
+		obj.category = category
+	if(entry_date != "none")
+		obj.entry_date = entry_date
 	const items = await stock.find(obj)
 	res.send(items)
 })
@@ -104,15 +112,16 @@ app.post('/sales/send', async (req, res) => {
 
 //sales view
 app.get('/sales/view', (req, res) => {
+	const model_no = req.query.model_no
 	const category = req.query.category
 	const transaction_date = req.query.transaction_date
 	var obj = {}
-	if(category != "none" && transaction_date != "none")
-		obj = {category, transaction_date}
-	else if(category != "none")
-		obj = {category}
-	else if(transaction_date != "none")
-		obj = {transaction_date}
+	if(model_no != "none")
+		obj.model_no = model_no
+	if(category != "none")
+		obj.category = category
+	if(transaction_date != "none")
+		obj.transaction_date = transaction_date 
 	sales.find(obj).then((items) => {
 		res.send(items)
 	}).catch((e) => {
