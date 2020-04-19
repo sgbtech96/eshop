@@ -1,28 +1,39 @@
 const mongoose = require('mongoose')
-const sales = mongoose.model('sales', {
-	model_no: {
+var schema = new mongoose.Schema({
+	mdno: {
 		type: String,
-		required: true
+		required: true,
+		trim: true,
+		lowercase: true
 	},
-	transaction_date: {
-		type: Date,
-		required: true
+	td: {
+		type: String
 	},
-	transaction_time: {
-		type: String,
-		required: true
+	tt: {
+		type: String
 	},
-	category: {
-		type: String,
-		required: true
+	cat: {
+		type: String
 	},
-	told_price: {
+	tp: {
 		type: Number,
 		required: true
 	},
-	selling_price: {
+	sp: {
 		type: Number,
 		required: true
 	}
 })
+
+//#####Middleware to auto-fill: td, tt#####
+schema.pre('save', function (next) {
+	const item = this
+	const mdno = item.mdno
+	const today = new Date()
+	item.td = today.toString().substring(4, 15)
+	item.tt = today.toString().substring(16, 21)
+	next()	
+})
+
+const sales = mongoose.model('sales', schema)
 module.exports = sales

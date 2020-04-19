@@ -10,70 +10,56 @@
 		<div class="col-4">
 			<form type="submit" action="/sales/send" method="post" class="container">
 				<div class="row">
-					<div class="col-5">
-						Model-No:<br>
-						<input type="text" name="model_no" size="13">
-					</div>
-					<div class="col">
-						Transaction Date:<br>
-						<input type="date" name="transaction_date" size="13">
-					</div>
-					
+					Model-No:<br>
+					<input type="text" name="mdno" size="13" required>
 				</div><br>
 				<div class="row">
-					<div class="col-5">
-						Transaction Time:<br>
-						<input type="text" name="transaction_time" id="tt" size="13">
-					</div>
-					<div class="col">
-						Category of Item:<br>
-						<input type="text" name="category" size="13">
-					</div>
+					Told Price:<br>
+					<input type="number" name="tp" size="13" required>
 				</div><br>
 				<div class="row">
-					<div class="col-5">
-						Told Price:<br>
-						<input type="text" name="told_price" size="13">
-					</div>
-					<div class="col">
-						Selling Price:<br>
-						<input type="text" name="selling_price" size="13">
-					</div>
-				</div><br><br>
-				<div class="row container">
-					<div class="container col"><button type="submit" class="btn btn-info">Make Entry</button></div>
+					Selling Price:<br>
+					<input type="number" name="sp" size="13" required>
+				</div><br>
+				<p id="wait" style="color:blue;"></p>
+				{{>status}}
+				{{>error}}
+				<div class="row">
+					<button type="submit" class="btn btn-info">Make Entry</button>
 				</div>
 			</form>
 		</div>
 		<div class="col">
-			<div class="row container">
+			<div class="row">
 				<div class="col">
 					Show by Model_No<br>
-					<input type="text" value="none" id="mdno" size="13">
+					<input type="text" id="smdno" size="13">
 				</div>
 				<div class="col">
 					Show by Category<br>
-						<select id="category">
-						  <option value="none" selected>none</option>
-						  <option value="deo">deo</option>
-						  <option value="purse">purse</option>
-						  <option value="belt">belt</option>
-						  <option value="watch">watch</option>
+						<select id="scat">
+							<option value="none">none</option>
 						</select>
 				</div>
 				<div class="col">
 					Show by Date<br>
-					<input type="date" id="date" value="none">
+					<input type="date" id="sdt" value="none">
+				</div>
+				<div class="col">
+					Show Sales<br>
+					<button id="viw" class="btn btn-info">View</button><br><br>
 				</div>
 				<div class="col-2">
-					Show Sales<br>
-					<button id="view" class="btn btn-info">View</button><br><br>
+					Reset<br>
+					<button id="res" class="btn btn-info">Reset</button>
 				</div>
 			</div>
-			<div class="row container">
-				<table id="show" style="width:50%" border="1" class="table container"></table>
+			<div class="row container" id="twait" style="color:blue;">
+			</div><br>
+			<div class="row">
+				<table id="stab" style="width:50%" border="1" class="table container"></table>
 			</div>
-			<div class="row container" id="bot">
+			<div class="row" id="bot">
 				<div class="col-1"><button class="btn btn-secondary btn-sm" id="bt1">Stock</button></div>
 				<div class="col-1"><button class="btn btn-secondary btn-sm" id="bt2">Sales</button></div>
 				<div class="col"><button class="btn btn-secondary btn-sm" id="bt3">Home</button></div>

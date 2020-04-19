@@ -8,8 +8,9 @@ const port = process.env.PORT || 3000
 //db connect
 require('../database/connect')
 
-//including the stock and sales models
+//including the stock, categories and sales models
 const stock = require('../database/models/stock')
+const category = require('../database/models/categories')
 const sales = require('../database/models/sales')
 
 //setting up dir structure
@@ -53,84 +54,146 @@ app.get('/stock', (req, res) => {
 	res.render('stock', {})
 })
 
-//stock entry
+app.get('/categories/view', async (req, res) => {
+	try {
+		const cats = await category.find({})
+		res.send(cats)
+	} catch(e) {
+
+	}
+	
+})
+//#####Stock entry#####
 app.post('/stock/send', async (req, res) => {
-	const model_no = req.body.model_no
-	const old = await stock.findOneAndUpdate({model_no}, {
-		$inc: {
-			quantity: req.body.quantity
+	const mdno = req.body.mdno
+	try {
+		const old = await stock.findOneAndUpdate({mdno}, {
+			$inc: {
+				qty: req.body.qty
+			},
+			$set: {
+				cp: req.body.cp,
+				mp: req.body.mp
+			}
+		})
+		if(old)
+		{
+			res.render('stock', {
+				status: 'Quantity of item updated in stock successfully!'
+			})
+			return
 		}
-	})
-	if(old != undefined)
-	{
-		res.render('stock', {})
-		return
-	}
-	const item = new stock(req.body)
-	await item.save()
-	res.render('stock', {})
-})
-
-//stock view
-app.get('/stock/view',async (req, res) => {
-	const quantity = req.query.quantity
-	if(quantity != "none")
-	{
-		const short_items = await stock.find({quantity: { $lt:quantity }})
-		res.send(short_items)
-		return
-	}
-	const model_no = req.query.model_no
-	const category = req.query.category
-	const entry_date = req.query.entry_date
-	var obj = {}
-	if(model_no != "none")
-		obj.model_no = model_no
-	if(category != "none")
-		obj.category = category
-	if(entry_date != "none")
-		obj.entry_date = entry_date
-	const items = await stock.find(obj)
-	res.send(items)
-})
-
-//sale entry
-app.post('/sales/send', async (req, res) => {
-	const model_no = req.body.model_no
-	await stock.findOneAndUpdate({model_no}, {
-		$inc: {
-			quantity: -1
+		const item = new stock(req.body)
+		await item.save()
+		var obj = {
+			val: item.cat
 		}
-	})
-	const item = new sales(req.body)
-	item.save().then(() => {
-		res.render('sales', {});
-	}).catch((e) => {
-		res.send(e);
-	})
+		const cat = new category(obj)
+		await cat.save()
+		res.render('stock', {
+			status: 'Item added to stock successfully!'
+		})
+	} catch(e) {
+		res.render('stock', {
+			error: e
+		})
+	}
+	
 })
 
-//sales view
-app.get('/sales/view', (req, res) => {
-	const model_no = req.query.model_no
-	const category = req.query.category
-	const transaction_date = req.query.transaction_date
-	var obj = {}
-	if(model_no != "none")
-		obj.model_no = model_no
-	if(category != "none")
-		obj.category = category
-	if(transaction_date != "none")
-		obj.transaction_date = transaction_date 
-	sales.find(obj).then((items) => {
+//#####Stock view#####
+app.get('/stock/view', async (req, res) => {
+	try {
+		const qty = req.query.qty
+		if(qty != "none")
+		{
+			const shitems = await stock.find({qty: { $lt:qty }})
+			res.send(shitems)
+			return
+		}
+		const mdno = req.query.mdno
+		const cat = req.query.cat
+		const edt = req.query.edt
+		var obj = {}
+		if(mdno != "none")
+			obj.mdno = mdno
+		if(cat != "none")
+			obj.cat = cat
+		if(edt != "none")
+			obj.edt = edt
+		const items = await stock.find(obj)
 		res.send(items)
-	}).catch((e) => {
+	} catch(e) {
 		res.send(e)
-	})
+	}
 })
 
+//#####Sale entry#####
+app.post('/sales/send', async (req, res) => {
 
-//listening at port
+	//*****Decrement from stock*****
+	const mdno = req.body.mdno
+	const tp = req.body.tp
+	const sp = req.body.sp
+	try {
+		const doc = await stock.findOne({mdno})
+		//*****If not found in stock*****
+		if(!doc) {
+			res.render('sales', {
+				error: "Item with Model_No: "+ mdno + " not found in stock!",
+				status: ''
+			})
+			return
+		}
+		//*****Adding to sales*****
+		if(doc.qty > 0) {
+			doc.qty -= 1
+			await doc.save()
+		}
+		else {
+			res.render('sales', {
+				error: "Item with Model_No: "+ mdno + " out of stock!",
+				status: ''
+			})
+			return
+		}
+		req.body.cat = doc.cat
+		const item = new sales(req.body)
+		await item.save()
+		res.render('sales', {
+			status: 'Sales updated successfully!',
+			error: ''
+		})
+	} catch(e) {
+
+	}
+})
+
+//#####Sales view#####
+app.get('/sales/view', async (req, res) => {
+
+	//*****Applying filters*****
+	const mdno = req.query.mdno
+	const cat = req.query.cat
+	const td = req.query.td
+	var obj = {}
+	if(mdno != "none")
+		obj.mdno = mdno
+	if(cat != "none")
+		obj.cat = cat
+	if(td != "none")
+		obj.td = td
+
+	//*****Searching with applied filters*****
+	try {
+		const items = await sales.find(obj)
+		res.send(items)
+	} catch(e) {
+		res.send(e)
+	}
+})
+
+//#####Listening at port#####
 app.listen(port, () => {
 	console.log('Server is up on port', port)
 })

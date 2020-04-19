@@ -6,84 +6,85 @@
 	<title>Stock</title>
 </head>
 <body>
-	<form type="submit" action="/stock/send" method="post" class="container">
-		<div class="row">
-			<div class="col">
-				Model-No:<br>
-				<input type="text" name="model_no">
-			</div>
-			<div class="col">
-				Entry Date:<br>
-				<input type="date" name="entry_date" id="ed">
-			</div>
-			<div class="col">
-				Entry Time:<br>
-				<input type="text" name="entry_time" id="et">
-			</div>
-			<div class="col">
-				Category of Item:<br>
-				<input type="text" name="category">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col">
-				Quantity:<br>
-				<input type="text" name="quantity">
-			</div>
-			<div class="col">
-				Cost Price:<br>
-				<input type="text" name="cost_price">
-			</div>
-			<div class="col">
-				Marked Price:<br>
-				<input type="text" name="marked_price">
-			</div>
-			<div clas="col">
-				Dealer Info:<br>
-				<input type="text" name="dealer_info">
-			</div>
-		</div><br>
-		<div class="row">
-			<button type="submit" class="btn btn-info">Make Entry</button>
-		</div>
-	</form>
-	<hr>
-	<div class="row container">
-		<div class="col">
-			Show by Model_No<br>
-			<input type="text" value="none" id="mdno">
-		</div>
-		<div class="col">
-		Show by Category<br>
-			<select id="category">
-			  <option value="none" selected>none</option>
-			  <option value="deo">deo</option>
-			  <option value="purse">purse</option>
-			  <option value="belt">belt</option>
-			  <option value="watch">watch</option>
-			</select>
-		</div>
-		<div class="col">
-			Show by Date<br>
-			<input type="date" id="date" value="none">
-		</div>
-		<div class="col">
-			Show by Quantity less than<br>
-			<input type="text" id="qty" value="none">
-		</div>
-		<div class="col">
-			Show Stock<br>
-			<button id="view" class="btn btn-info">View</button><br><br>
-		</div>
-	</div>
 	<div class="row">
-		<table id="show" style="width:50%" border="1" class="table container"></table>
+		<div class="col-4">
+			<form type="submit" action="/stock/send" method="post" class="container">
+				<div class="row">
+					Model-No:
+					<input type="text" name="mdno" size="13" required>
+				</div><br>
+				<div class="row">
+					Category of Item:
+					<input type="text" name="cat" size="13" required>
+				</div><br>
+				<div class="row">
+					Quantity:
+					<input type="number" name="qty" size="13" required>
+				</div><br>
+				<div class="row">
+					Cost Price:
+					<input type="number" name="cp" size="13" required>
+				</div><br>
+				<div class="row">
+					Marked Price:
+					<input type="number" name="mp" size="13" required>
+				</div><br>
+				<div clas="row">
+					Dealer Info:
+					<input type="text" name="dinf" size="13" required>
+				</div><br>
+				<p id="wait" style="color:blue;"></p>
+				{{>status}}
+				{{>error}}
+				<div class="row">
+					<button type="submit" class="btn btn-info">Make Entry</button>
+				</div>
+			</form>
+		</div>
+		<div class="col">
+			<div class="row">
+				<div class="col">
+					Show by Model_No<br>
+					<input type="text" id="smdno" size="13">
+				</div>
+				<div class="col">
+				Show by Category<br>
+					<select id="scat">
+					  <option value="none">none</option>
+					</select>
+				</div>
+				<div class="col">
+					Show by Date<br>
+					<input type="date" id="sdt" size="13">
+				</div>
+				<div class="col">
+					Show by Quantity less than<br>
+					<input type="number" id="sqty">
+				</div>
+				<div class="col">
+					Show Stock<br>
+					<button id="viw" class="btn btn-info">View</button><br><br>
+				</div>
+				<div class="col">
+					Reset<br>
+					<button id="res" class="btn btn-info">Reset</button>
+				</div>
+			</div>
+			<div class="row container" id="twait" style="color:blue;">
+			</div><br>
+			<div class="row">
+				<table id="stab" style="width:50%" border="1" class="table container"></table>
+			</div>
+			<div class="row" id="bot">
+				<div class="col-1"><button class="btn btn-secondary btn-sm" id="bt1">Stock</button></div>
+				<div class="col-1"><button class="btn btn-secondary btn-sm" id="bt2">Sales</button></div>
+				<div class="col"><button class="btn btn-secondary btn-sm" id="bt3">Home</button></div>
+			</div>
+		</div>
 	</div>
-	<div class="row container" id="bot">
-		<button class="btn btn-dark" id="bt1">Stock</button>
-		<button class="btn btn-dark" id="bt2">Sales</button>
-		<button class="btn btn-dark" id="bt3">Home</button>
-	</div>
+
+	
+	
 	<script src="/js/stockSCRIPT.js"></script>
 	<script src="/js/indexSCRIPT.js"></script>
 </body>

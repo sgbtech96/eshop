@@ -1,36 +1,52 @@
 const mongoose = require('mongoose')
-const stock = mongoose.model('stock', {
-	model_no: {
+const schema = new mongoose.Schema({
+	mdno: {
 		type: String,
-		required: true
+		required: true,
+		trim: true,
+		lowercase: true
 	},
-	entry_date: {
-		type: Date,
-		required: true
+	edt: {
+		type: String
 	},
-	entry_time: {
+	ett: {
+		type: String
+	},
+	cat: {
 		type: String,
-		required: true
+		required: true,
+		trim: true,
+		lowercase: true
 	},
-	category: {
-		type: String,
-		required: true
-	},
-	quantity: {
+	qty: {
 		type: Number,
 		required: true
 	},
-	cost_price: {
+	cp: {
 		type: Number,
 		required: true
 	},
-	marked_price: {
+	mp: {
 		type: Number,
 		required: true
 	},
-	dealer_info: {
+	dinf: {
 		type: String,
-		required: true
+		required: true,
+		trim: true,
+		lowercase: true
 	}
 })
+
+//#####Middleware to auto-fill: etd, ett, tt#####
+schema.pre('save', function(next) {
+	const item = this
+	const today = new Date()
+	item.edt = today.toString().substring(4, 15)
+	item.ett = today.toString().substring(16, 21)
+	next()
+})
+
+
+const stock = mongoose.model('stock', schema)
 module.exports = stock
